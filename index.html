@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>夏时记奶茶 | 仙境茶会</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+        }
+        :root {
+            --cream: #fffbf5;
+            --mint: #97ddc9;
+            --pink: #f9c8d6;
+            --pink-light: #ffe4ed;
+            --mint-light: #caf3e8;
+            --text-dark: #3a3f3c;
+            --shadow-sm: 0 6px 14px rgba(151,221,201,0.2);
+        }
+        body {
+            background-color: #fff9f0;
+            color: var(--text-dark);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><path fill="%23f9c8d6" d="M20,30 L30,20 L40,30 L30,40 Z"/><circle cx="70" cy="70" r="6" fill="%2397ddc9"/><text x="10" y="85" font-size="14" fill="%23f9c8d6">♠️♥️♣️♦️</text></svg>');
+            background-repeat: repeat;
+            background-size: 70px 70px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #fffbf5;
+            box-shadow: 0 4px 12px rgba(151,221,201,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--pink);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-box img {
+            height: 48px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(151,221,201,0.2));
+            loading: lazy;
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: #da8ea6;
+            letter-spacing: 1px;
+        }
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            background-color: #fef2f5;
+            color: #4f5a55;
+            padding: 6px 16px;
+            border-radius: 60px;
+            transition: 0.2s;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .nav-menu a:hover {
+            background: var(--mint);
+            color: #2c5a52;
+            box-shadow: 0 2px 6px rgba(151,221,201,0.3);
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--pink);
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #b85c7a;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline:hover {
+            background: var(--pink);
+            border-color: var(--pink);
+            color: white;
+        }
+        .btn-solid {
+            background: var(--mint);
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #2c5a52;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-card {
+            background: #ffffff;
+            width: 400px;
+            max-width: 90%;
+            border-radius: 56px;
+            box-shadow: 0 20px 30px rgba(151,221,201,0.25);
+            padding: 24px 28px 32px;
+            text-align: center;
+            position: relative;
+            border: 2px solid var(--pink);
+        }
+        .modal-card h3 {
+            color: #e8a0b5;
+            margin-bottom: 12px;
+        }
+        .tabs {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #ffe0d4;
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            cursor: pointer;
+            color: #9eb3ab;
+        }
+        .tab-btn.active {
+            color: var(--pink);
+            border-bottom: 3px solid var(--pink);
+        }
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 60px;
+            border: 1px solid var(--pink);
+            background: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: var(--mint);
+        }
+        .modal-submit {
+            background: var(--mint);
+            color: #2c5a52;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 60px;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+        .close-modal {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            font-size: 26px;
+            cursor: pointer;
+            color: #e7a9bc;
+        }
+        .page-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+            display: none;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+        .page-wrap.active {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .page-title {
+            text-align: center;
+            font-size: 38px;
+            margin-bottom: 48px;
+            color: #da8ea6;
+            position: relative;
+            font-weight: 700;
+        }
+        .page-title:before, .page-title:after {
+            content: "♣️";
+            font-size: 32px;
+            opacity: 0.6;
+            margin: 0 14px;
+            display: inline-block;
+        }
+        .page-title:after {
+            content: "♥️";
+        }
+        .banner {
+            background: #fff4ed;
+            border-radius: 64px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 40px;
+            margin-bottom: 56px;
+            box-shadow: 0 8px 20px rgba(151,221,201,0.15);
+            border: 2px solid var(--pink);
+            gap: 30px;
+        }
+        .banner-word {
+            flex: 2;
+            padding-left: 24px;
+        }
+        .banner-word h2 {
+            font-size: 52px;
+            color: #e8a0b5;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .banner-word p {
+            font-size: 20px;
+            color: #5e6e68;
+            max-width: 550px;
+        }
+        .banner-img-box {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .banner-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            loading: lazy;
+        }
+        .goods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 32px;
+        }
+        .goods-card {
+            background: white;
+            border-radius: 40px;
+            overflow: hidden;
+            transition: all 0.2s;
+            border: 1px solid var(--pink-light);
+            box-shadow: 0 4px 12px rgba(151,221,201,0.1);
+            cursor: pointer;
+        }
+        .goods-card:hover { transform: translateY(-5px); box-shadow: 0 16px 24px rgba(151,221,201,0.2);}
+        .goods-img {
+            height: 200px;
+            background: #fef3ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .goods-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s;
+            loading: lazy;
+        }
+        .goods-card:hover .goods-img img {
+            transform: scale(1.02);
+        }
+        .goods-desc {
+            padding: 18px;
+        }
+        .goods-name {
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .goods-price {
+            color: #dd95ae;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .buy-btn {
+            width: 100%;
+            margin-top: 14px;
+            padding: 10px;
+            background: var(--mint);
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #2a554d;
+            font-size: 1rem;
+        }
+        footer {
+            background: #304e48;
+            color: #f4dfd2;
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 0.85rem;
+            border-top: 6px solid var(--pink);
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+        }
+        .float-rabbit {
+            position: fixed;
+            right: 24px;
+            bottom: 100px;
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            cursor: pointer;
+            z-index: 100;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .float-rabbit img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            loading: lazy;
+        }
+        /* 气泡 */
+        .rabbit-talk {
+            position: fixed;
+            background: #ffffff;
+            padding: 8px 14px;
+            border-radius: 24px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            display: none;
+            white-space: nowrap;
+            border-left: 4px solid var(--mint);
+            color: #674f58;
+            font-weight: 500;
+            z-index: 200;
+            pointer-events: none;
+            max-width: 240px;
+            white-space: normal;
+            word-break: keep-all;
+            line-height: 1.4;
+        }
+        /* 指向头像 */
+        .rabbit-talk::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 6px 0 6px 8px;
+            border-color: transparent transparent transparent var(--mint);
+        }
+        .music-left {
+            position: fixed;
+            left: 24px;
+            bottom: 100px;
+            font-size: 36px;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.2s, opacity 0.2s;
+            opacity: 0.7;
+            color: #b58c7a;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
+        }
+        .music-left:hover {
+            transform: scale(1.1);
+            opacity: 1;
+            color: var(--pink);
+        }
+        .chat-box {
+            position: fixed;
+            right: 24px;
+            bottom: 190px;
+            width: 340px;
+            height: 440px;
+            background: #fffef7;
+            border-radius: 48px;
+            box-shadow: 0 15px 30px rgba(151,221,201,0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid var(--pink);
+            z-index: 1001;
+        }
+        .chat-top {
+            background: var(--mint);
+            padding: 14px;
+            color: #2d534b;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        .chat-content {
+            flex:1;
+            padding: 12px;
+            overflow-y: auto;
+            background: #fefaf2;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #f0cfd8;
+        }
+        .chat-input input {
+            flex:1;
+            padding: 8px 14px;
+            border-radius: 60px;
+            border: 1px solid var(--pink);
+        }
+        .chat-input button {
+            margin-left: 8px;
+            background: var(--pink);
+            border: none;
+            border-radius: 60px;
+            padding: 0 16px;
+            color: #5e404b;
+            font-weight: bold;
+        }
+        .msg-left {
+            background: #daf4ec;
+            padding: 8px 14px;
+            border-radius: 24px;
+            margin: 6px 0;
+            max-width: 85%;
+            display: inline-block;
+            color: #2c534b;
+        }
+        .msg-right {
+            background: #ffe3dc;
+            padding: 8px 14px;
+            border-radius: 24px;
+            margin: 6px 0 6px auto;
+            max-width: 85%;
+            text-align: right;
+        }
+        .decor-clock {
+            position: absolute;
+            font-size: 38px;
+            opacity: 0.2;
+            bottom: 30px;
+            left: 20px;
+            z-index: -1;
+        }
+        .image-preview {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .image-preview img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        @media (max-width: 800px) {
+            .banner {
+                padding: 20px 24px;
+            }
+            .banner-word h2 { font-size: 32px; }
+            .banner-word p { font-size: 16px; }
+            .banner-img-box { width: 180px; height: 180px; }
+            .goods-grid { gap: 20px; }
+            .music-left {
+                left: 16px;
+                bottom: 80px;
+                font-size: 28px;
+            }
+            .rabbit-talk {
+                font-size: 0.7rem;
+                padding: 6px 10px;
+                max-width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="imagePreview" class="image-preview" onclick="closePreview()">
+    <img id="previewImg" src="" alt="预览">
+</div>
+
+<header>
+    <div class="nav-container">
+        <div class="logo-box">
+            <img src="img/logo.jpg" alt="夏时记logo" loading="lazy">
+            <span class="logo-text">夏时记奶茶</span>
+        </div>
+        <div class="nav-menu">
+            <a onclick="changePage(0)">首页</a>
+            <a onclick="changePage(1)">品牌介绍</a>
+            <a onclick="changePage(2)">产品菜单</a>
+            <a onclick="changePage(3)">吉祥物·小时</a>
+            <a onclick="changePage(4)">线下门店</a>
+            <a onclick="changePage(5)">品牌资讯</a>
+            <a onclick="changePage(6)">加盟合作</a>
+            <a onclick="changePage(7)">联系我们</a>
+            <a onclick="changePage(8)">在线客服</a>
+            <a onclick="changePage(9)">用户协议</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="openAuthModal('login')">登录</button>
+            <button class="btn-solid" onclick="openAuthModal('register')">注册</button>
+        </div>
+    </div>
+</header>
+
+<div id="authModal" class="modal">
+    <div class="modal-card">
+        <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="login">登录</button>
+            <button class="tab-btn" data-tab="register">注册</button>
+        </div>
+        <div id="loginForm">
+            <div class="form-group"><input type="text" placeholder="手机号 / 用户名" id="loginUser"></div>
+            <div class="form-group"><input type="password" placeholder="密码" id="loginPwd"></div>
+            <button class="modal-submit" onclick="handleLogin()">登录夏时记</button>
+        </div>
+        <div id="registerForm" style="display:none;">
+            <div class="form-group"><input type="text" placeholder="昵称" id="regName"></div>
+            <div class="form-group"><input type="text" placeholder="手机号" id="regPhone"></div>
+            <div class="form-group"><input type="password" placeholder="密码" id="regPwd"></div>
+            <button class="modal-submit" onclick="handleRegister()">立即注册</button>
+        </div>
+    </div>
+</div>
+
+<!-- 首页 -->
+<section class="page-wrap active" id="page0">
+    <div class="decor-clock">🃏🕰️</div>
+    <div class="banner">
+        <div class="banner-word">
+            <h2>夏时记 · 仙境茶会</h2>
+            <p>掉进兔子洞，遇见一杯奇幻好茶。</p>
+        </div>
+        <div class="banner-img-box">
+            <img src="img/Clocket.png" alt="小时" loading="lazy">
+        </div>
+    </div>
+    <h3 class="page-title">热销推荐</h3>
+    <div class="goods-grid">
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/signature_milk_tea.jpg" alt="招牌奶绿" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">夏时记招牌奶绿</div><div class="goods-price">¥9.9</div><button class="buy-btn">仙境特饮</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/mint_lime_tea.jpg" alt="薄荷青柠果茶" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">薄荷青柠果茶</div><div class="goods-price">¥11.9</div><button class="buy-btn">仙境特饮</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/peach_cheese_jelly.jpg" alt="粉桃芝士奶冻" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">粉桃芝士奶冻</div><div class="goods-price">¥12.9</div><button class="buy-btn">仙境特饮</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/strawberry_mousse.jpg" alt="草莓奶霜" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">草莓奶霜</div><div class="goods-price">¥15.9</div><button class="buy-btn">爆款推荐</button></div>
+        </div>
+    </div>
+</section>
+
+<!-- 品牌介绍 -->
+<section class="page-wrap" id="page1">
+    <h3 class="page-title">疯帽子的茶会</h3>
+    <div style="display:flex; gap:30px; flex-wrap:wrap; align-items:center;">
+        <div style="flex:1;">
+            <img src="img/shop_photo.jpg" style="width:100%; border-radius:40px;" loading="lazy">
+        </div>
+        <div style="flex:2; line-height:1.8; font-size:16px; background:#fffef7; border-radius:48px; padding:24px;">
+            <p>夏时记由夏予筱、筠珉、何以唯、周明瑞联合创立，灵感源自爱丽丝梦游仙境——踏入兔子洞，享用一杯奇幻茶饮。虚拟店长白兔先生，吉祥物“小时”是一只傲慢毒舌但又很靠谱的公兔子。</p><br>
+            <p>坚持鲜奶+鲜果，定价8~16元，视觉以奶白、薄荷绿、淡粉为主。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 产品菜单 -->
+<section class="page-wrap" id="page2">
+    <h3 class="page-title">仙境茶单</h3>
+    <h4 style="margin:20px 0 12px;color:#b0cfbf">一、鲜奶奶茶系列</h4>
+    <div class="goods-grid">
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/signature_milk_tea.jpg" alt="招牌奶绿" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">招牌奶绿</div><div class="goods-price">¥9.9</div><button class="buy-btn">选购</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/red_bean_milk.jpg" alt="红豆糯糯鲜奶" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">红豆糯糯鲜奶</div><div class="goods-price">¥10.9</div><button class="buy-btn">选购</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/taro_milk.jpg" alt="厚芋泥波波奶" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">厚芋泥波波奶</div><div class="goods-price">¥12.9</div><button class="buy-btn">选购</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/caramel_milk.jpg" alt="焦糖烤奶" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">焦糖烤奶</div><div class="goods-price">¥10.5</div><button class="buy-btn">选购</button></div>
+        </div>
+    </div>
+    <h4 style="margin:35px 0 12px;color:#f2b6ca">二、鲜果茶系列</h4>
+    <div class="goods-grid">
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/mint_lime_tea.jpg" alt="薄荷青柠茶" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">薄荷青柠茶</div><div class="goods-price">¥11.9</div><button class="buy-btn">选购</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/strawberry_mousse.jpg" alt="草莓奶霜" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">草莓奶霜</div><div class="goods-price">¥15.9</div><button class="buy-btn">爆款推荐</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/passion_fruit_tea.jpg" alt="百香鲜果多多" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">百香鲜果多多</div><div class="goods-price">¥12.5</div><button class="buy-btn">选购</button></div>
+        </div>
+        <div class="goods-card">
+            <div class="goods-img"><img src="img/white_peach_oolong.jpg" alt="白桃乌龙轻乳" loading="lazy"></div>
+            <div class="goods-desc"><div class="goods-name">白桃乌龙轻乳</div><div class="goods-price">¥13.9</div><button class="buy-btn">选购</button></div>
+        </div>
+    </div>
+</section>
+
+<!-- 吉祥物·小时 -->
+<section class="page-wrap" id="page3">
+    <h3 class="page-title">吉祥物 · 小时</h3>
+    <div style="display:flex; gap:40px; flex-wrap:wrap; align-items:center;">
+        <div style="width:280px;">
+            <img src="img/Clocket_with_tea.png" style="width:100%; border-radius:40px;" loading="lazy">
+        </div>
+        <div style="flex:1; background:#fffef9; border-radius:48px; padding:28px; line-height:1.85;">
+            <p><strong>姓名：小时</strong> &nbsp;|&nbsp; <strong>性别：公</strong></p>
+            <p>嘴上不饶人但刀子嘴豆腐心，是个本质善良又靠谱的好孩子。口味独特，譬如喜欢面包蘸辣椒酱，但对饮品的审美却意外正常。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 线下门店 -->
+<section class="page-wrap" id="page4">
+    <h3 class="page-title">兔子洞入口</h3>
+    <div style="background:#fff9f3; border-radius:56px; max-width:700px; margin:0 auto; padding:32px; border:2px solid var(--mint);">
+        <p>♠️茂名总店：茂名神山高校社区文创街114514号</p>
+        <p>♥️广州大学城店：番禺大学城MYGO新天地负一层</p>
+        <p>♣️湛江连锁店：飞鸟山区凤凰乐园路128号</p>
+    </div>
+</section>
+
+<!-- 品牌资讯 -->
+<section class="page-wrap" id="page5">
+    <h3 class="page-title">仙境茶报</h3>
+    <div style="background:#fffaf5; border-radius:56px; padding:32px; max-width:750px; margin:0 auto; border:1px solid #f9c8d6;">
+        <p>2025.09：白桃乌龙轻乳新品上市，第二杯半价</p>
+        <p>2025.12：夏时记第20家门店落地深圳，广东区域加盟开放</p>
+        <p>2026.05：夏日限定“薄荷仙境”系列好评如潮，小时周边上新</p>
+        <p>草莓奶霜成为当月人气王</p>
+    </div>
+</section>
+
+<!-- 加盟合作 -->
+<section class="page-wrap" id="page6">
+    <h3 class="page-title">加入奇幻茶会</h3>
+    <div style="background:#fff9f4; border-radius:56px; padding:30px; max-width:700px; margin:0 auto; border:2px solid var(--pink);">
+        <p>小成本创业，总部全程扶持</p>
+        <p>档口店 3.8万元起 | 标准店 7.8万元起</p>
+        <p>原料配送 / 新品研发 / IP视觉系统</p><br>
+        <input placeholder="姓名" style="width:45%; padding:10px; border-radius:60px; border:1px solid var(--pink);"><input placeholder="联系电话" style="width:45%; padding:10px; border-radius:60px; margin-left:5px; border:1px solid var(--pink);"><br>
+        <button style="background:var(--mint); border:none; padding:10px 28px; border-radius:60px; margin-top:18px;">提交意向</button>
+    </div>
+</section>
+
+<!-- 联系我们 -->
+<section class="page-wrap" id="page7">
+    <h3 class="page-title">致信仙境</h3>
+    <div style="background:#fff9f0; border-radius:56px; padding:30px; max-width:700px; margin:0 auto; border:2px solid var(--mint);">
+        <p>📞 商务热线：400-880-XXXX</p>
+        <p>📧 仙境邮箱：wonderland@xiashiji.com</p>
+        <p>🏠 总部地址：茂名神山高校社区文创街114514号</p>
+        <textarea rows="3" style="width:100%; margin:15px 0; padding:12px; border-radius:32px; border:1px solid #f0cfd8;" placeholder="写下你的茶会留言..."></textarea>
+        <button style="background:var(--pink); border:none; padding:8px 20px; border-radius:40px;">寄出信函</button>
+    </div>
+</section>
+
+<!-- 在线客服 -->
+<section class="page-wrap" id="page8">
+    <h3 class="page-title">小时AI客服</h3>
+    <div style="background:#fffef7; border-radius:56px; padding:30px; max-width:750px; margin:0 auto; border:1px solid var(--mint);">
+        <p>🐇 小时作为客服，回答还算靠谱。可以问他产品价格、门店地址、加盟政策。</p>
+        <p>双击右下角小时头像，打开对话窗口（别指望他说“你好”）。</p>
+    </div>
+</section>
+
+<!-- 用户协议 -->
+<section class="page-wrap" id="page9">
+    <h3 class="page-title">仙境约定</h3>
+    <div style="background:#fffef5; border-radius:56px; padding:30px; max-width:800px; margin:0 auto; border:2px solid var(--pink); line-height:1.7;">
+        <p>1. 本网站为夏时记官方展示平台，IP形象（小时、白兔先生等）版权归品牌团队所有。</p>
+        <p>2. 线上展示为产品参考，实际请以门店及外卖平台为准。</p>
+        <p>3. 用户信息仅用于加盟对接及售后，将严格保密。</p>
+        <p>4. 价格以门店当日菜单为准，夏时记保留解释权。</p>
+    </div>
+</section>
+
+<footer>
+    夏时记奶茶官网 ©2026 仙境茶会 | 每一杯都是奇幻旅程
+</footer>
+
+<!-- 悬浮音乐 -->
+<div class="music-left" id="musicControl" title="仙境音乐 (点击播放/暂停)">
+    🎧
+</div>
+
+<!-- 悬浮小时 -->
+<div class="float-rabbit" id="rabBtn">
+    <img src="img/Clocket.png" alt="小时" loading="lazy">
+</div>
+
+<!-- 独立气泡 -->
+<div class="rabbit-talk" id="tipBox">喂，叫我干嘛？有事快说。</div>
+
+<!-- 聊天窗口 -->
+<div class="chat-box" id="chatWin">
+    <div class="chat-top"><span>小时AI客服</span><span onclick="closeChat()" style="cursor:pointer;">✖</span></div>
+    <div class="chat-content" id="chatCon"><div class="msg-left">哟，问问题之前先想好，别浪费我时间。想问什么？优惠、门店还是加盟？</div></div>
+    <div class="chat-input"><input id="userInput" placeholder="输入问题..."><button onclick="sendMsg()">发送</button></div>
+</div>
+
+<script>
+    // 背景音乐控制
+    const bgm = new Audio('Piano Magic Motive.mp3');
+    bgm.loop = true;
+    bgm.volume = 0.25;
+    let musicPlaying = false;
+    const musicBtn = document.getElementById('musicControl');
+
+    musicBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (musicPlaying) {
+            bgm.pause();
+            musicPlaying = false;
+            musicBtn.style.opacity = '0.7';
+        } else {
+            bgm.play().then(() => {
+                musicPlaying = true;
+                musicBtn.style.opacity = '1';
+            }).catch(err => {
+                console.log('播放失败:', err);
+                alert('浏览器限制，请先点击页面任意位置后再尝试播放音乐。');
+            });
+        }
+    });
+
+    // 页面切换
+    function changePage(num){
+        document.querySelectorAll('.page-wrap').forEach(p=>p.classList.remove('active'));
+        document.getElementById('page'+num).classList.add('active');
+    }
+
+    // 登录注册模态框
+    const modal = document.getElementById('authModal');
+    function openAuthModal(type){
+        modal.style.display = 'flex';
+        if(type === 'register'){
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        } else {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.remove('active');
+        }
+    }
+    function closeAuthModal(){ modal.style.display = 'none'; }
+    window.onclick = function(e){ if(e.target === modal) closeAuthModal();}
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+        btn.onclick = function(){
+            let tab = this.getAttribute('data-tab');
+            if(tab === 'login'){ document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none';}
+            else{ document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block';}
+            document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+            this.classList.add('active');
+        }
+    });
+    function handleLogin(){ let u = document.getElementById('loginUser').value.trim(); if(u) alert(`欢迎回来，${u}。小时虽然态度差，但店里的茶还不错。`); else alert("请填写用户名"); closeAuthModal();}
+    function handleRegister(){ let n = document.getElementById('regName').value.trim(); if(n) alert(`${n}，注册成功。小时说：“哼，新人记得守规矩。”`); else alert("填写昵称"); closeAuthModal();}
+
+    // 单击显示随机语录
+    const tipBox = document.getElementById("tipBox");
+    const rabBtn = document.getElementById("rabBtn");
+    const chatWin = document.getElementById("chatWin");
+    const talkList = [
+        "哼，又点我干嘛？本店每一款奶茶都很能打。", 
+        "奶茶你随便点，包你满意。", 
+        "白桃乌龙轻乳？算你有眼光。", 
+        "草莓奶霜是红国王严选。"
+    ];
+
+    function showBubble(message) {
+        tipBox.innerText = message;
+        // 小时头像的位置和尺寸
+        const rect = rabBtn.getBoundingClientRect();
+        // 气泡宽度自动
+        tipBox.style.display = 'block';
+        // 强制重新计算宽度
+        const bubbleWidth = tipBox.offsetWidth;
+        // 气泡出现在头像左侧
+        let leftPos = rect.left - bubbleWidth - 12; // 留出箭头空间
+        // 避免超出屏幕左侧
+        if (leftPos < 10) leftPos = 10;
+        // 垂直位置：与头像垂直居中
+        let topPos = rect.top + (rect.height / 2) - (tipBox.offsetHeight / 2);
+        // 避免超出屏幕
+        if (topPos < 10) topPos = 10;
+        if (topPos + tipBox.offsetHeight > window.innerHeight - 10) {
+            topPos = window.innerHeight - tipBox.offsetHeight - 10;
+        }
+        tipBox.style.left = leftPos + 'px';
+        tipBox.style.top = topPos + 'px';
+        // 伪类箭头位置
+        setTimeout(() => {
+            tipBox.style.display = 'none';
+        }, 3000);
+    }
+
+    rabBtn.onclick = function(e){
+        e.stopPropagation();
+        let ran = Math.floor(Math.random() * talkList.length);
+        let msg = talkList[ran];
+        showBubble(msg);
+        console.log("单击小时，显示语录:", msg);
+    };
+    rabBtn.ondblclick = function(){ chatWin.style.display = "flex"; };
+    function closeChat(){ chatWin.style.display = "none"; }
+
+    // AI客服
+    const robotMap = {
+        "门店":"茂名总店文创街，广州大学城，湛江鼎盛广场。去喝就知道了。",
+        "加盟":"档口3.8万起，标准店7.8万，具体政策去加盟页面。",
+        "优惠":"优惠看公众号。",
+        "你好":"嗯。有事直说，关于奶茶我都能答。",
+        "您好":"嗯。有事直说，关于奶茶我都能答。",
+        "小时":"本兔就是小时。自家奶茶我闭眼推荐。",
+        "面包蘸辣椒酱":"哼，那是我最爱的吃法，你有意见？",
+        "奶绿":"招牌奶绿是店里的元老，清爽不腻。",
+        "脾气":"我脾气好着呢。",
+        "古怪口味":"我的口味哪里古怪了？你们不懂欣赏。"
+    };
+
+    function sendMsg(){
+        let input = document.getElementById('userInput');
+        let val = input.value.trim();
+        if(!val) return;
+        let chatCon = document.getElementById('chatCon');
+        chatCon.innerHTML += `<div class="msg-right">${val}</div>`;
+        let reply = "啧，问清楚点。比如加盟、优惠、门店。";
+        let matched = false;
+
+        // 先检查特殊彩蛋（不依赖 robotMap）
+        if (val.includes("吉祥物")) {
+            reply = "什么？白兔对外说我是吉祥物？";
+            matched = true;
+        } else if (val.includes("疯帽子") || val.includes("疯帽")) {
+            reply = "疯帽子那家伙整天摆弄茶壶，脾气古怪，不过茶会倒是挺能撑场面。说起来，疯帽子和白兔居然有点交情，不可思议。";
+            matched = true;
+        } else if (val.includes("红国王")) {
+            reply = "（左瞧右看，凑近小声道）红国王啊……脾气不小，动不动就“砍头”挂嘴边。他最喜欢玫瑰，谁要是碰他的玫瑰园，哼，自求多福。白兔先生是效忠于红国王的，欸，我这些话你可不要跟他们说啊。";
+            matched = true;
+        } else if (val.includes("爱丽丝")) {
+            reply = "爱丽丝？那个误闯仙境的小姑娘……倒是比大多数人都勇敢，眼光也不错，只有她懂我的热巧克力泡面（感动)";
+            matched = true;
+        } else if (val.includes("柴郡猫")) {
+            reply = "那只柴郡猫啊，说话云里雾里的。不过那家伙居然也喜欢面包蘸辣椒酱，哼，品味倒是不赖。懒得跟她多聊。";
+            matched = true;
+        } else if (val.includes("白兔先生") || val.includes("白兔")) {
+            reply = "哼，那个白兔先生？管得宽，规矩多，不过……店里能这么顺，还多亏她。算是勉强佩服一下吧。";
+            matched = true;
+        } else if (val.includes("你好可爱") || val.includes("小时可爱") || val.includes("你很可爱")) {
+            reply = "可、可爱……哼，你要是真想夸我，就买杯店里的奶茶，比夸我一百句管用。";
+            matched = true;
+        } else {
+            for (let key in robotMap) {
+                if (key === "你好" || key === "您好") {
+                    // 只有当输入内容完全等于“你好”或“您好”时才匹配
+                    if (val === key) {
+                        reply = robotMap[key];
+                        matched = true;
+                        break;
+                    }
+                } else {
+                    if (val.includes(key)) {
+                        reply = robotMap[key];
+                        matched = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!matched) {
+            reply = "啧，问清楚点。比如加盟、优惠、门店。";
+        }
+
+        setTimeout(()=>{
+            chatCon.innerHTML += `<div class="msg-left">${reply}</div>`;
+            chatCon.scrollTop = chatCon.scrollHeight;
+        }, 130);
+        input.value = "";
+    }
+    document.getElementById('userInput').onkeydown = function(e){ if(e.key === 'Enter') sendMsg();}
+
+    // 图片点击放大
+    function openPreview(imgSrc) {
+        const preview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        previewImg.src = imgSrc;
+        preview.style.display = 'flex';
+    }
+    function closePreview() {
+        document.getElementById('imagePreview').style.display = 'none';
+    }
+    document.querySelectorAll('.goods-img img').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openPreview(img.src);
+        });
+    });
+    const brandImg = document.querySelector('#page1 img');
+    if (brandImg) {
+        brandImg.style.cursor = 'pointer';
+        brandImg.addEventListener('click', () => openPreview(brandImg.src));
+    }
+    const mascotImg = document.querySelector('#page3 img');
+    if (mascotImg) {
+        mascotImg.style.cursor = 'pointer';
+        mascotImg.addEventListener('click', () => openPreview(mascotImg.src));
+    }
+</script>
+</body>
+</html>
