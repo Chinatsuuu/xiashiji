@@ -849,7 +849,8 @@
         "哼，又点我干嘛？本店每一款奶茶都很能打。", 
         "奶茶你随便点，包你满意。", 
         "白桃乌龙轻乳？算你有眼光。", 
-        "草莓奶霜是红国王严选。"
+        "草莓奶霜是红国王严选。",
+        "可恶的白兔怎么在摸鱼。"
     ];
 
     function showBubble(message) {
@@ -861,7 +862,7 @@
         // 强制重新计算宽度
         const bubbleWidth = tipBox.offsetWidth;
         // 气泡出现在头像左侧
-        let leftPos = rect.left - bubbleWidth - 12; // 留出箭头空间
+        let leftPos = rect.left - bubbleWidth - 12;
         // 避免超出屏幕左侧
         if (leftPos < 10) leftPos = 10;
         // 垂直位置：与头像垂直居中
@@ -891,16 +892,24 @@
 
     // AI客服
     const robotMap = {
-        "门店":"茂名总店文创街，广州大学城，湛江鼎盛广场。去喝就知道了。",
+        "门店":"茂名总店文创街，广州大学城，湛江凤凰乐园。去喝就知道了。",
         "加盟":"档口3.8万起，标准店7.8万，具体政策去加盟页面。",
         "优惠":"优惠看公众号。",
+        "价格":"本店奶茶价格在8至16之间。",
+        "奶茶":"鲜奶鲜果茶，童叟无欺。",
         "你好":"嗯。有事直说，关于奶茶我都能答。",
         "您好":"嗯。有事直说，关于奶茶我都能答。",
         "小时":"本兔就是小时。自家奶茶我闭眼推荐。",
         "面包蘸辣椒酱":"哼，那是我最爱的吃法，你有意见？",
+        "面包蘸辣酱":"哼，那是我最爱的吃法，你有意见？",
         "奶绿":"招牌奶绿是店里的元老，清爽不腻。",
+        "草莓":"本店草莓奶霜可是赢得了红国王的喜爱（得意）。",
+        "草莓奶霜":"本店草莓奶霜可是赢得了红国王的喜爱（得意）。",
         "脾气":"我脾气好着呢。",
-        "古怪口味":"我的口味哪里古怪了？你们不懂欣赏。"
+        "古怪口味":"我的口味哪里古怪了？你们不懂欣赏。",
+        "口味古怪":"我的口味哪里古怪了？你们不懂欣赏。",
+        "口味奇怪":"我的口味哪里古怪了？你们不懂欣赏。",
+        "奇怪口味":"我的口味哪里古怪了？你们不懂欣赏。"
     };
 
     function sendMsg(){
@@ -912,7 +921,7 @@
         let reply = "啧，问清楚点。比如加盟、优惠、门店。";
         let matched = false;
 
-        // 先检查特殊彩蛋（不依赖 robotMap）
+        // 特殊彩蛋
         if (val.includes("吉祥物")) {
             reply = "什么？白兔对外说我是吉祥物？";
             matched = true;
@@ -925,15 +934,30 @@
         } else if (val.includes("爱丽丝")) {
             reply = "爱丽丝？那个误闯仙境的小姑娘……倒是比大多数人都勇敢，眼光也不错，只有她懂我的热巧克力泡面（感动)";
             matched = true;
-        } else if (val.includes("柴郡猫")) {
+        } else if (val.includes("柴郡猫") || val.includes("柴郡")) {
             reply = "那只柴郡猫啊，说话云里雾里的。不过那家伙居然也喜欢面包蘸辣椒酱，哼，品味倒是不赖。懒得跟她多聊。";
             matched = true;
         } else if (val.includes("白兔先生") || val.includes("白兔")) {
             reply = "哼，那个白兔先生？管得宽，规矩多，不过……店里能这么顺，还多亏她。算是勉强佩服一下吧。";
             matched = true;
-        } else if (val.includes("你好可爱") || val.includes("小时可爱") || val.includes("你很可爱")) {
+        } else if (val.includes("你好可爱") || val.includes("小时可爱") || val.includes("你很可爱") || val.includes("你真可爱")) {
             reply = "可、可爱……哼，你要是真想夸我，就买杯店里的奶茶，比夸我一百句管用。";
             matched = true;
+        } else if (val.includes("黑暗料理") || val.includes("你吃的奇怪") || val.includes("你吃的好奇怪")) {
+            reply = "黑暗料理？那是你们不懂欣赏……（小声嘟囔）算了，跟你们说也说不清楚。有这闲工夫，不如去买杯草莓奶霜，那可是红国王认可的好东西。";
+            matched = true;
+        } else if (val.includes("凑企鹅")) {
+            reply = "什么凑企鹅？听不懂……（不耐烦）我是小时！算了，你是刚从疯帽子茶会出来吗？要不要来杯招牌奶绿清醒一下？";
+            matched = true;
+        } else if (val.includes("夏日谈") || val.includes("中二王朝")) {
+            reply = "嗯？好熟悉，（恍惚）白兔似乎说她梦到过一个......没什么。";
+            matched = true;
+        } else if (val.includes("夏予筱") || val.includes("筱筱")) {
+            reply = "筱......？总觉得在哪听过。";
+            matched = true;
+        } else if (val.includes("茶会") || val.includes("茶话会")) {
+            reply = "疯帽子想办一场永不结束的茶会，谁知道在想什么。你要去参加的话注意一点，有些人出来就像喝了假酒一样，我寻思办的也不是酒场啊。";
+            matched = true;   // 修复：添加这一行确保彩蛋生效
         } else {
             for (let key in robotMap) {
                 if (key === "你好" || key === "您好") {
