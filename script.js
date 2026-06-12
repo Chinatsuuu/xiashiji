@@ -149,7 +149,7 @@ authModal.addEventListener('click', (e) => {
 
 const audio = new Audio('Piano Magic Motive.mp3');
 audio.loop = true; 
-audio.volume = 0.25;
+audio.volume = 0.65;
 let isPlay = false;
 
 musicControl.addEventListener('click', (e) => {

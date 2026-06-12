@@ -20,6 +20,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    color: #5e6e68;
 }
 header {
     background: var(--cream);
@@ -106,6 +107,7 @@ header {
     outline: none;
     background: white;
     font-size: 14px;
+    color: #333;
 }
 .input-base:focus {
     border-color: var(--mint);
@@ -252,6 +254,7 @@ header {
     gap: 24px;
     flex-wrap: wrap;
     align-items: center;
+    margin: 0 auto;
 }
 .flex-child {
     flex: 1;
