@@ -4,522 +4,279 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>夏时记奶茶 | 仙境茶会</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, sans-serif; }
-        :root { --cream: #fffbf5; --mint: #97ddc9; --pink: #f9c8d6; --pink-light: #ffe4ed; --radius-lg: 48px; --radius-full: 60px; }
-        body { background: #fff9f0 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><path fill="%23f9c8d6" d="M20,30 L30,20 L40,30 L30,40 Z"/><circle cx="70" cy="70" r="6" fill="%2397ddc9"/><text x="10" y="85" font-size="14" fill="%23f9c8d6">♠️♥️♣️♦️</text></svg>') repeat; background-size: 70px 70px; min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: var(--cream); box-shadow: 0 4px 12px rgba(151,221,201,0.2); position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--pink); }
-        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 28px; flex-wrap: wrap; gap: 12px; }
-        .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-box img { height: 48px; filter: drop-shadow(2px 2px 4px rgba(151,221,201,0.2)); }
-        .logo-text { font-size: 28px; font-weight: 800; color: #da8ea6; letter-spacing: 1px; }
-        .nav-menu { display: flex; flex-wrap: wrap; gap: 6px; }
-        .nav-menu a { background-color: #fef2f5; color: #4f5a55; padding: 6px 16px; border-radius: var(--radius-full); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
-        .nav-menu a:hover { background: var(--mint); color: #2c5a52; box-shadow: 0 2px 6px rgba(151,221,201,0.3); }
-        .btn-outline, .btn-solid { padding: 6px 18px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-outline { background: transparent; border: 1.5px solid var(--pink); color: #b85c7a; }
-        .btn-outline:hover { background: var(--pink); color: white; }
-        .btn-solid { background: var(--mint); border: none; color: #2c5a52; }
-        .input-base { width: 100%; padding: 12px 16px; border-radius: var(--radius-full); border: 1px solid var(--pink); outline: none; background: white; font-size: 0.9rem; }
-        .input-base:focus { border-color: var(--mint); }
-        .btn-submit { background: var(--mint); color: #2c5a52; font-weight: bold; padding: 10px 20px; border: none; border-radius: var(--radius-full); cursor: pointer; width: 100%; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-card { background: #fff; width: 400px; max-width: 90%; border-radius: var(--radius-lg); padding: 24px 28px; text-align: center; position: relative; border: 2px solid var(--pink); }
-        .tabs { display: flex; gap: 28px; justify-content: center; margin-bottom: 28px; border-bottom: 1px solid #ffe0d4; padding-bottom: 8px; }
-        .tab-btn { background: none; border: none; font-size: 1.1rem; font-weight: 700; padding: 6px 16px; cursor: pointer; color: #9eb3ab; }
-        .tab-btn.active { color: var(--pink); border-bottom: 3px solid var(--pink); }
-        .close-modal { position: absolute; top: 18px; right: 24px; font-size: 26px; cursor: pointer; color: #e7a9bc; }
-        .page-wrap { max-width: 1400px; margin: 0 auto; padding: 40px 20px; flex: 1; display: none; width: 100%; }
-        .page-wrap.active { display: block; animation: fadeIn 0.25s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0);} }
-        .page-title { text-align: center; font-size: 38px; margin-bottom: 48px; color: #da8ea6; font-weight: 700; }
-        .page-title::before { content: "♣️ "; } .page-title::after { content: " ♥️"; }
-        .info-card { background: #fffef7; border-radius: var(--radius-lg); padding: 32px; max-width: 750px; margin: 0 auto; border: 2px solid var(--mint); line-height: 1.8; }
-        .info-card.pink-border { border-color: var(--pink); }
-        .flex-box { display: flex; gap: 30px; flex-wrap: wrap; align-items: center; }
-        .flex-child { flex: 1; min-width: 280px; }
-        .banner { background: #fff4ed; border-radius: var(--radius-lg); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 24px 40px; margin-bottom: 56px; border: 2px solid var(--pink); gap: 30px; }
-        .banner-word h2 { font-size: 52px; color: #e8a0b5; margin-bottom: 12px; }
-        .banner-word p { font-size: 20px; color: #5e6e68; }
-        .banner-img-box { width: 260px; height: 260px; border-radius: 50%; overflow: hidden; }
-        .banner-img-box img, .goods-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.2s; }
-        .goods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; }
-        .goods-card { background: white; border-radius: 40px; overflow: hidden; border: 1px solid var(--pink-light); cursor: pointer; transition: 0.2s; }
-        .goods-card:hover { transform: translateY(-5px); box-shadow: 0 16px 24px rgba(151,221,201,0.2); }
-        .goods-card:hover .goods-img img { transform: scale(1.02); }
-        .goods-img { height: 200px; background: #fef3ea; }
-        .goods-desc { padding: 18px; }
-        .goods-name { font-weight: 800; font-size: 1.2rem; margin-bottom: 6px; }
-        .goods-price { color: #dd95ae; font-weight: 800; font-size: 1.1rem; }
-        .music-left { position: fixed; left: 24px; bottom: 100px; font-size: 36px; cursor: pointer; z-index: 100; transition: 0.2s; opacity: 0.7; color: #b58c7a; }
-        .music-left:hover { transform: scale(1.1); opacity: 1; color: var(--pink); }
-        .float-rabbit { position: fixed; right: 24px; bottom: 100px; width: 76px; height: 76px; border-radius: 50%; cursor: pointer; z-index: 100; overflow: hidden; }
-        .float-rabbit img { width: 100%; height: 100%; object-fit: cover; }
-        .rabbit-talk { position: fixed; background: #fff; padding: 8px 14px; border-radius: 24px; font-size: 0.8rem; box-shadow: 0 2px 12px rgba(0,0,0,0.15); display: none; border-left: 4px solid var(--mint); color: #674f58; font-weight: 500; z-index: 200; max-width: 240px; line-height: 1.4; }
-        .rabbit-talk::before { content: ''; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); border-style: solid; border-width: 6px 0 6px 8px; border-color: transparent transparent transparent var(--mint); }
-        .chat-box { position: fixed; right: 24px; bottom: 190px; width: 340px; height: 440px; background: #fffef7; border-radius: var(--radius-lg); box-shadow: 0 15px 30px rgba(151,221,201,0.3); display: none; flex-direction: column; overflow: hidden; border: 2px solid var(--pink); z-index: 1001; }
-        .chat-top { background: var(--mint); padding: 14px; color: #2d534b; display: flex; justify-content: space-between; font-weight: bold; }
-        .chat-content { flex: 1; padding: 12px; overflow-y: auto; background: #fefaf2; }
-        .chat-input { display: flex; padding: 10px; background: white; border-top: 1px solid #f0cfd8; gap: 8px; }
-        .chat-input input { flex: 1; padding: 8px 14px; border-radius: var(--radius-full); border: 1px solid var(--pink); }
-        .chat-input button { background: var(--pink); border: none; border-radius: var(--radius-full); padding: 0 16px; color: #5e404b; font-weight: bold; cursor: pointer; }
-        .msg-left, .msg-right { padding: 8px 14px; border-radius: 24px; margin: 6px 0; max-width: 85%; }
-        .msg-left { background: #daf4ec; color: #2c534b; }
-        .msg-right { background: #ffe3dc; margin-left: auto; text-align: right; }
-        .image-preview { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; cursor: pointer; }
-        .image-preview img { max-width: 90%; max-height: 90%; border-radius: 20px; }
-        footer { background: #304e48; color: #f4dfd2; text-align: center; padding: 28px 20px; font-size: 0.85rem; border-top: 6px solid var(--pink); margin-top: auto; }
-        @media (max-width: 800px) {
-            .banner { padding: 20px 24px; } .banner-word h2 { font-size: 32px; } .banner-word p { font-size: 16px; } .banner-img-box { width: 180px; height: 180px; }
-            .goods-grid { gap: 20px; } .music-left { left: 16px; bottom: 80px; font-size: 28px; } .rabbit-talk { font-size: 0.7rem; max-width: 180px; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="imagePreview" class="image-preview"><img id="previewImg" src="" alt="预览"></div>
+<div id="imagePreview" class="image-preview">
+    <img id="previewImg" src="" alt="预览">
+</div>
 
 <header>
     <div class="nav-container">
-        <div class="logo-box"><img src="img/logo.jpg" alt="夏时记logo"><span class="logo-text">夏时记奶茶</span></div>
-        <div class="nav-menu" id="navMenu"></div>
-        <div>
-            <button id="openLoginBtn" class="btn-outline">登录</button>
-            <button id="openRegBtn" class="btn-solid">注册</button>
+        <div class="logo-box">
+            <img src="img/logo.jpg" alt="夏时记logo">
+            <span class="logo-text">夏时记奶茶</span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="javascript:void(0);" class="nav-item active" data-target="page-home">首页</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-about">品牌介绍</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-history">品牌历程</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-menu">产品菜单</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-rabbit">吉祥物·小时</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-join">加入我们</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-investor">投资者关系</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-contact">致信仙境</a>
+        </div>
+        <div class="auth-box">
+            <button class="btn-outline" id="openLoginBtn">登录</button>
+            <button class="btn-solid" id="openRegBtn">注册</button>
         </div>
     </div>
 </header>
 
-<div id="authModal" class="modal">
-    <div class="modal-card">
-        <span id="closeAuthBtn" class="close-modal">&times;</span>
-        <div class="tabs">
-            <button id="tabLoginBtn" class="tab-btn active">登录</button>
-            <button id="tabRegBtn" class="tab-btn">注册</button>
+<div id="authModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" id="closeAuthBtn">×</button>
+        <div class="modal-tabs">
+            <div class="modal-tab active" id="tabLoginBtn">登录夏时记</div>
+            <div class="modal-tab" id="tabRegBtn">立即注册</div>
         </div>
         <div id="loginForm">
-            <div style="margin-bottom:18px"><input id="loginUser" placeholder="手机号 / 用户名" class="input-base"></div>
-            <div style="margin-bottom:18px"><input id="loginPwd" type="password" placeholder="密码" class="input-base"></div>
-            <button id="submitLoginBtn" class="btn-submit">登录夏时记</button>
+            <input type="text" id="loginUser" class="input-base" placeholder="用户名/邮箱">
+            <input type="password" class="input-base" placeholder="密码">
+            <button class="btn-solid btn-block" id="submitLoginBtn">登录</button>
         </div>
         <div id="registerForm" style="display:none;">
-            <div style="margin-bottom:18px"><input id="regName" placeholder="昵称" class="input-base"></div>
-            <div style="margin-bottom:18px"><input placeholder="手机号" class="input-base"></div>
-            <div style="margin-bottom:18px"><input type="password" placeholder="密码" class="input-base"></div>
-            <button id="submitRegBtn" class="btn-submit">立即注册</button>
+            <input type="text" id="regName" class="input-base" placeholder="起个响亮的昵称">
+            <input type="email" class="input-base" placeholder="邮箱地址">
+            <input type="password" class="input-base" placeholder="设置密码">
+            <button class="btn-solid btn-block" id="submitRegBtn">提交注册</button>
         </div>
     </div>
 </div>
 
-<section class="page-wrap active">
-    <div class="banner">
-        <div class="banner-word"><h2>夏时记 · 仙境茶会</h2><p>掉进兔子洞，遇见一杯奇幻好茶。</p></div>
-        <div class="banner-img-box"><img src="img/Clocket.png" alt="小时" class="zoomable"></div>
-    </div>
-    <h3 class="page-title">热销推荐</h3>
-    <div class="goods-grid" id="hotGoodsGrid"></div>
-</section>
+<main class="main-content">
+    <section id="page-home" class="page-wrap active">
+        <div class="hero-section">
+            <h2 class="hero-title">夏时记 · 仙境茶会</h2>
+            <p class="hero-subtitle">掉进兔子洞，遇见一杯奇幻好茶。</p>
+            <img src="img/Clocket.png" alt="小时" class="hero-img zoomable">
+        </div>
+        <div class="section-block">
+            <h3 class="block-title">热销推荐</h3>
+            <div class="goods-grid" id="hotGoodsGrid"></div>
+        </div>
+    </section>
 
-<section class="page-wrap">
-    <h3 class="page-title">疯帽子的茶会</h3>
-    <div class="flex-box info-card">
-        <div class="flex-child"><img src="img/shop_photo.jpg" style="width:100%; border-radius:40px;" class="zoomable"></div>
-        <div class="flex-child">
-            <p>夏时记由夏予筱、筠珉、何以唯、周明瑞联合创立，灵感源自爱丽丝梦游仙境——踏入兔子洞，享用一杯奇幻茶饮。虚拟店长白兔先生，吉祥物“小时”是一只傲慢毒舌但又很靠谱的公兔子。</p><br>
+    <section id="page-about" class="page-wrap">
+        <h3 class="page-title">疯帽子的茶会</h3>
+        <div class="about-card">
+            <img src="img/shop_photo.jpg" alt="店面" class="about-img zoomable">
+            <p>夏时记由夏予筱、筠珉、何以唯、周明瑞联合创立，灵感源自爱丽丝梦游仙境——踏入兔子洞，享用一杯奇幻茶饮。虚拟店长白兔先生，吉祥物“小时”是一只傲慢毒舌但又很靠谱的公兔子。</p>
             <p>坚持鲜奶+鲜果，定价8~16元，视觉以奶白、薄荷绿、淡粉为主。</p>
         </div>
-    </div>
-</section>
-
-<section class="page-wrap">
-    <h3 class="page-title">仙境茶单</h3>
-    <h4 style="margin:20px 0 12px;color:#b0cfbf">一、鲜奶奶茶系列</h4>
-    <div class="goods-grid" id="milkTeaGrid"></div>
-    <h4 style="margin:35px 0 12px;color:#f2b6ca">二、鲜果茶系列</h4>
-    <div class="goods-grid" id="fruitTeaGrid"></div>
-</section>
-
-<section class="page-wrap">
-    <h3 class="page-title">吉祥物 · 小时</h3>
-    <div class="flex-box info-card">
-        <div style="width:280px;"><img src="img/Clocket_with_tea.png" style="width:100%; border-radius:40px;" class="zoomable"></div>
-        <div class="flex-child">
-            <p><strong>姓名：小时</strong> &nbsp;|&nbsp; <strong>性别：公</strong></p>
-            <p>嘴上不饶人但刀子嘴豆腐心，是个本质善良又靠谱的好孩子。口味独特，譬如喜欢面包蘸辣椒酱，但对饮品的审美却意外正常。</p>
+        <div class="section-block" style="margin-top: 40px;">
+            <h3 class="block-title">兔子洞入口</h3>
+            <div class="store-list">
+                <div class="store-item"><span class="suit">♠️</span><strong>茂名总店：</strong>茂名神山高校社区文创街114514号</div>
+                <div class="store-item"><span class="suit">♥️</span><strong>广州大学城店：</strong>番禺大学城MYGO新天地负一层</div>
+                <div class="store-item"><span class="suit">♣️</span><strong>湛江连锁店：</strong>飞鸟山区凤凰乐园路128号</div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="page-wrap">
-    <h3 class="page-title">兔子洞入口</h3>
-    <div class="info-card">
-        <p>♠️茂名总店：茂名神山高校社区文创街114514号</p>
-        <p>♥️广州大学城店：番禺大学城MYGO新天地负一层</p>
-        <p>♣️湛江连锁店：飞鸟山区凤凰乐园路128号</p>
-    </div>
-</section>
-
-<section class="page-wrap">
-    <h3 class="page-title">仙境茶报</h3>
-    <div class="info-card pink-border">
-        <p>2025.09：白桃乌龙轻乳新品上市，第二杯半价</p>
-        <p>2025.12：夏时记第20家门店落地深圳，广东区域加盟开放</p>
-        <p>2026.05：夏日限定“薄荷仙境”系列好评如潮，小时周边上新</p>
-        <p>草莓奶霜成为当月人气王</p>
-    </div>
-</section>
-
-<section class="page-wrap">
-    <h3 class="page-title">加入奇幻茶会</h3>
-    <div class="info-card pink-border" style="text-align:center;">
-        <p>小成本创业，总部全程扶持</p>
-        <p>档口店 3.8万元起 | 标准店 7.8万元起</p>
-        <p>原料配送 / 新品研发 / IP视觉系统</p><br>
-        <div style="display:flex; gap:10px; justify-content:center;">
-            <input placeholder="姓名" class="input-base" style="width:45%;">
-            <input placeholder="联系电话" class="input-base" style="width:45%;">
+    <section id="page-history" class="page-wrap">
+        <h3 class="page-title">品牌历程</h3>
+        <div class="guming-timeline">
+            <div class="guming-timeline-item">
+                <div class="guming-timeline-badge">2025</div>
+                <div class="guming-timeline-panel">
+                    <div class="guming-timeline-heading">
+                        <span class="guming-timeline-subdate">06.16</span>
+                        <h4 class="guming-timeline-title">品牌诞生</h4>
+                    </div>
+                    <div class="guming-timeline-body">
+                        <p>夏时记品牌正式创立，首家总店入驻兔子洞边缘，确立鲜奶加鲜果的品质基准。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guming-timeline-item guming-inverted">
+                <div class="guming-timeline-badge">2025</div>
+                <div class="guming-timeline-panel">
+                    <div class="guming-timeline-heading">
+                        <span class="guming-timeline-subdate">09</span>
+                        <h4 class="guming-timeline-title">新品狂欢</h4>
+                    </div>
+                    <div class="guming-timeline-body">
+                        <p>白桃乌龙轻乳新品震撼上市，开启第二杯半价的仙境狂欢序幕。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guming-timeline-item">
+                <div class="guming-timeline-badge">2025</div>
+                <div class="guming-timeline-panel">
+                    <div class="guming-timeline-heading">
+                        <span class="guming-timeline-subdate">12</span>
+                        <h4 class="guming-timeline-title">拓店跨越</h4>
+                    </div>
+                    <div class="guming-timeline-body">
+                        <p>夏时记第20家门店在深圳顺利落地，全面宣布开放广东区域加盟生态网络。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guming-timeline-item guming-inverted">
+                <div class="guming-timeline-badge">2026</div>
+                <div class="guming-timeline-panel">
+                    <div class="guming-timeline-heading">
+                        <span class="guming-timeline-subdate">05</span>
+                        <h4 class="guming-timeline-title">爆款席卷</h4>
+                    </div>
+                    <div class="guming-timeline-body">
+                        <p>夏日限定“薄荷仙境”系列好评如潮，小时IP周边精美上新，草莓奶霜问鼎当月单品人气王。</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button class="btn-solid" style="margin-top:18px; padding:10px 28px; border-radius:60px;">提交意向</button>
-    </div>
-</section>
+    </section>
 
-<section class="page-wrap">
-    <h3 class="page-title">致信仙境</h3>
-    <div class="info-card">
-        <p>📞 商务热线：400-880-XXXX</p>
-        <p>📧 仙境邮箱：wonderland@xiashiji.com</p>
-        <p>🏠 总部地址：茂名神山高校社区文创街114514号</p>
-        <textarea rows="3" class="input-base" style="width:100%; margin:15px 0; border-radius:24px;" placeholder="写下你的茶会留言..."></textarea>
-        <button class="btn-solid" style="background:var(--pink); color:#fff;">寄出信函</button>
-    </div>
-</section>
+    <section id="page-menu" class="page-wrap">
+        <h3 class="page-title">仙境茶单</h3>
+        <div class="section-block">
+            <h4 class="menu-cat-title">一、鲜奶奶茶系列</h4>
+            <div class="goods-grid" id="milkTeaGrid"></div>
+        </div>
+        <div class="section-block">
+            <h4 class="menu-cat-title">二、鲜果茶系列</h4>
+            <div class="goods-grid" id="fruitTeaGrid"></div>
+        </div>
+    </section>
 
-<section class="page-wrap">
-    <h3 class="page-title">小时AI客服</h3>
-    <div class="info-card">
-        <p>🐇 小时作为客服，回答还算靠谱。可以问他产品价格、门店地址、加盟政策。</p>
-        <p>双击右下角小时头像，打开对话窗口（别指望他说“你好”）。</p>
-    </div>
-</section>
+    <section id="page-rabbit" class="page-wrap">
+        <h3 class="page-title">吉祥物 · 小时</h3>
+        <div class="rabbit-profile">
+            <img src="img/Clocket_with_tea.png" alt="小时" class="rabbit-avatar zoomable">
+            <div class="rabbit-info">
+                <p><strong>姓名：</strong>小时 &nbsp;|&nbsp; <strong>性别：</strong>公</p>
+                <p>嘴上不饶人但刀子嘴豆腐心，是个本质善良又靠谱的好孩子。口味独特，譬如喜欢面包蘸辣椒酱，但对饮品的审美却意外正常。</p>
+            </div>
+        </div>
+    </section>
 
-<section class="page-wrap">
-    <h3 class="page-title">仙境约定</h3>
-    <div class="info-card pink-border">
-        <p>1. 本网站为夏时记官方展示平台，IP形象（小时、白兔先生等）版权归品牌团队所有。</p>
-        <p>2. 线上展示为产品参考，实际请以门店及外卖平台为准。</p>
-        <p>3. 用户信息仅用于加盟对接及售后，将严格保密。</p>
-        <p>4. 价格以门店当日菜单为准，夏时记保留解释权。</p>
-    </div>
-</section>
+    <section id="page-join" class="page-wrap">
+        <h3 class="page-title">加入奇幻茶会</h3>
+        <div class="info-card">
+            <p>小成本创业，总部全程扶持</p>
+            <p><strong>档口店</strong> 3.8万元起 &nbsp;|&nbsp; <strong>标准店</strong> 7.8万元起</p>
+            <p>原料配送 / 新品研发 / IP视觉系统</p>
+        </div>
+        <div class="form-container" style="max-width:500px; margin: 30px auto;">
+            <input type="text" class="input-base" placeholder="您的姓名">
+            <input type="tel" class="input-base" placeholder="联系电话">
+            <input type="text" class="input-base" placeholder="意向加盟城市">
+            <button class="btn-solid btn-block" id="joinSubmitBtn">提交意向</button>
+        </div>
+    </section>
+
+    <section id="page-investor" class="page-wrap">
+        <h3 class="page-title">投资者关系</h3>
+        <div class="guming-investor-wrapper">
+            <div class="guming-investor-banner">
+                <div class="guming-investor-banner-text">
+                    <h4>INVESTOR RELATIONS</h4>
+                    <h3>投资者关系服务平台</h3>
+                    <div class="guming-investor-line"></div>
+                    <p>自2025年6月16日品牌正式成立以来，夏时记始终坚守核心经营理念。我们致力于构建合规、公开、透明的沟通渠道，为全球投资者创造卓越且具韧性的长远资产回报价值。</p>
+                </div>
+            </div>
+            <div class="guming-investor-grid">
+                <div class="guming-investor-card">
+                    <div class="guming-card-num">01</div>
+                    <div class="guming-card-meta">
+                        <h4>信息披露</h4>
+                        <h5>INFORMATION</h5>
+                        <p>定期披露公司季度、半年度及年度经营报表，提供完整准确的企业基本财务数据、核心重大事件及发展业务走向公告。</p>
+                    </div>
+                    <button class="btn-solid">浏览详情</button>
+                </div>
+                <div class="guming-investor-card">
+                    <div class="guming-card-num">02</div>
+                    <div class="guming-card-meta">
+                        <h4>公司治理</h4>
+                        <h5>GOVERNANCE</h5>
+                        <p>不断健全风险控制管理架构，完善股东会与各级管理层的协同制约体系，切实维护每一位投资机构与中持股民的基本合法权益。</p>
+                    </div>
+                    <button class="btn-solid">管理规范</button>
+                </div>
+                <div class="guming-investor-card">
+                    <div class="guming-card-num">03</div>
+                    <div class="guming-card-meta">
+                        <h4>互动反馈</h4>
+                        <h5>INTERACTION</h5>
+                        <p>搭建无障碍常态化交互热线，高效解答分析机构的疑问，定期承办闭门调研及线下股东实地茶会交流见闻活动。</p>
+                    </div>
+                    <button class="btn-solid">与我对接</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-contact" class="page-wrap">
+        <h3 class="page-title">致信仙境</h3>
+        <div class="contact-box">
+            <p>📞 商务热线：400-880-XXXX</p>
+            <p>📧 仙境邮箱：wonderland@xiashiji.com</p>
+            <p>🏠 总部地址：茂名神山高校社区文创街114514号</p>
+        </div>
+        <div class="form-container" style="max-width:600px; margin-top:30px;">
+            <textarea class="input-base textarea-message" placeholder="写下你的茶会留言..."></textarea>
+            <button class="btn-solid btn-send-mail" id="sendMailBtn">寄出信函</button>
+        </div>
+    </section>
+
+    <section id="page-ai" class="page-wrap">
+        <h3 class="page-title">小时AI客服</h3>
+        <div class="info-card">
+            <p>🐇 小时作为客服，回答还算靠谱。可以问他产品价格、门店地址、加盟政策。</p>
+            <p>双击右下角小时头像，打开对话窗口（别指望他说“你好”）。</p>
+        </div>
+    </section>
+
+    <section id="page-protocol" class="page-wrap">
+        <h3 class="page-title">仙境约定</h3>
+        <div class="info-card pink-border">
+            <p>1. 本网站为夏时记官方展示 platform，IP形象（小时、白兔先生等）版权归品牌团队所有。</p>
+            <p>2. 线上展示为产品参考，实际请以门店及外卖平台为准。</p>
+            <p>3. 用户信息仅用于加盟对接及售后，将严格保密。</p>
+            <p>4. 价格以门店当日菜单为准，夏时记保留解释权。</p>
+        </div>
+    </section>
+</main>
 
 <footer>夏时记奶茶官网 ©2026 仙境茶会 | 每一杯都是奇幻旅程</footer>
 
-<div class="music-left" id="musicControl" title="仙境音乐">🎧</div>
-<div class="float-rabbit" id="rabBtn"><img src="img/Clocket.png" alt="小时"></div>
-<div class="rabbit-talk" id="tipBox"></div>
+<div class="music-widget" id="musicControl">🎧</div>
 
-<div class="chat-box" id="chatWin">
-    <div class="chat-top"><span>小时AI客服</span><span id="closeChatBtn" style="cursor:pointer;">✖</span></div>
-    <div class="chat-content" id="chatCon">
-        <div class="msg-left">哟，问问题之前先想好，别浪费我时间。想问什么？优惠、门店还是加盟？</div>
-    </div>
-    <div class="chat-input"><input id="userInput" placeholder="输入问题..."><button id="sendChatBtn">发送</button></div>
+<div class="float-rabbit" id="rabBtn">
+    <img src="img/Clocket.png" alt="小时">
 </div>
 
-<script>
-    const navs = ["首页", "品牌介绍", "产品菜单", "吉祥物·小时", "线下门店", "品牌资讯", "加盟合作", "联系我们", "在线客服", "用户协议"];
-    const arr = [
-        { name: "夏时记招牌奶绿", price: "9.9", img: "signature_milk_tea.jpg", type: "milk", hot: true },
-        { name: "薄荷青柠果茶", price: "11.9", img: "mint_lime_tea.jpg", type: "fruit", hot: true },
-        { name: "粉桃芝士奶冻", price: "12.9", img: "peach_cheese_jelly.jpg", type: "fruit", hot: true },
-        { name: "草莓奶霜", price: "15.9", img: "strawberry_mousse.jpg", type: "fruit", hot: true, boom: true },
-        { name: "红豆糯糯鲜奶", price: "10.9", img: "red_bean_milk.jpg", type: "milk" },
-        { name: "厚芋泥波波奶", price: "12.9", img: "taro_milk.jpg", type: "milk" },
-        { name: "焦糖烤奶", price: "10.5", img: "caramel_milk.jpg", type: "milk" },
-        { name: "百香鲜果多多", price: "12.5", img: "passion_fruit_tea.jpg", type: "fruit" },
-        { name: "白桃乌龙轻乳", price: "13.9", img: "white_peach_oolong.jpg", type: "fruit" }
-    ];
+<div class="chat-tip-box" id="tipBox">哼，又点我干嘛？本店每一款奶茶都很能打。</div>
 
-    const navMenu = document.getElementById('navMenu');
-    const hotGoodsGrid = document.getElementById('hotGoodsGrid');
-    const milkTeaGrid = document.getElementById('milkTeaGrid');
-    const fruitTeaGrid = document.getElementById('fruitTeaGrid');
-    const authModal = document.getElementById('authModal');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const loginUser = document.getElementById('loginUser');
-    const regName = document.getElementById('regName');
-    const musicControl = document.getElementById('musicControl');
-    const rabBtn = document.getElementById('rabBtn');
-    const tipBox = document.getElementById('tipBox');
-    const chatWin = document.getElementById('chatWin');
-    const chatCon = document.getElementById('chatCon');
-    const userInput = document.getElementById('userInput');
-    const previewImg = document.getElementById('previewImg');
-    const imagePreview = document.getElementById('imagePreview');
-    const openLoginBtn = document.getElementById('openLoginBtn');
-    const openRegBtn = document.getElementById('openRegBtn');
-    const closeAuthBtn = document.getElementById('closeAuthBtn');
-    const tabLoginBtn = document.getElementById('tabLoginBtn');
-    const tabRegBtn = document.getElementById('tabRegBtn');
-    const submitLoginBtn = document.getElementById('submitLoginBtn');
-    const submitRegBtn = document.getElementById('submitRegBtn');
-    const closeChatBtn = document.getElementById('closeChatBtn');
-    const sendChatBtn = document.getElementById('sendChatBtn');
+<div class="chat-window" id="chatWin">
+    <div class="chat-header">
+        <span>小时AI客服</span>
+        <button class="chat-close" id="closeChatBtn">×</button>
+    </div>
+    <div class="chat-body" id="chatCon">
+        <div class="msg-left">哟，问问题之前先想好，别浪费我时间。想问什么？优惠、门店还是加盟？</div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="输入你想问的...">
+        <button id="sendChatBtn">发送</button>
+    </div>
+</div>
 
-    let navHtml = '';
-    for (let i = 0; i < navs.length; i++) {
-        navHtml += '<a>' + navs[i] + '</a>';
-    }
-    navMenu.innerHTML = navHtml;
-
-    const navLinks = navMenu.getElementsByTagName('a');
-    for (let i = 0; i < navLinks.length; i++) {
-        navLinks[i].onclick = function() {
-            go(i);
-        };
-    }
-
-    function createGoodsCard(item) {
-        let btnText = '选购';
-        if (item.boom) {
-            btnText = '爆款推荐';
-        } else if (item.hot) {
-            btnText = '仙境特饮';
-        }
-        
-        return '<div class="goods-card">' +
-                    '<div class="goods-img">' +
-                        '<img src="img/' + item.img + '" class="zoomable" loading="lazy">' +
-                    '</div>' +
-                    '<div class="goods-desc">' +
-                        '<div class="goods-name">' + item.name + '</div>' +
-                        '<div class="goods-price">¥' + item.price + '</div>' +
-                        '<button class="btn-solid" style="width:100%; margin-top:14px;">' + btnText + '</button>' +
-                    '</div>' +
-                '</div>';
-    }
-
-    let hotHtml = '';
-    let milkHtml = '';
-    let fruitHtml = '';
-
-    for (let i = 0; i < arr.length; i++) {
-        const product = arr[i];
-        if (product.hot) {
-            hotHtml += createGoodsCard(product);
-        }
-        if (product.type === 'milk') {
-            milkHtml += createGoodsCard(product);
-        } else if (product.type === 'fruit') {
-            fruitHtml += createGoodsCard(product);
-        }
-    }
-    
-    hotGoodsGrid.innerHTML = hotHtml;
-    milkTeaGrid.innerHTML = milkHtml;
-    fruitTeaGrid.innerHTML = fruitHtml;
-
-    function go(pageIndex) {
-        const pages = document.querySelectorAll('.page-wrap');
-        for (let i = 0; i < pages.length; i++) {
-            if (i === pageIndex) {
-                pages[i].classList.add('active');
-            } else {
-                pages[i].classList.remove('active');
-            }
-        }
-    }
-
-    function pop(type) {
-        authModal.style.display = 'flex';
-        tab(type);
-    }
-
-    function tab(type) {
-        if (type === 'login') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-            tabLoginBtn.classList.add('active');
-            tabRegBtn.classList.remove('active');
-        } else {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-            tabLoginBtn.classList.remove('active');
-            tabRegBtn.classList.add('active');
-        }
-    }
-
-    function doAuth(type) {
-        let username = '';
-        if (type === 'login') {
-            username = loginUser.value.trim();
-        } else {
-            username = regName.value.trim();
-        }
-
-        if (username === '') {
-            if (type === 'login') {
-                alert("请填写用户名");
-            } else {
-                alert("填写昵称");
-            }
-            return;
-        }
-
-        if (type === 'login') {
-            alert('欢迎回来，' + username + '。小时虽然态度差，但店里的茶还不错。');
-        } else {
-            alert(username + '，注册成功。小时说：“哼，新人记得守规矩。”');
-        }
-        authModal.style.display = 'none';
-    }
-
-    openLoginBtn.onclick = function() { pop('login'); };
-    openRegBtn.onclick = function() { pop('register'); };
-    closeAuthBtn.onclick = function() { authModal.style.display = 'none'; };
-    tabLoginBtn.onclick = function() { tab('login'); };
-    tabRegBtn.onclick = function() { tab('register'); };
-    submitLoginBtn.onclick = function() { doAuth('login'); };
-    submitRegBtn.onclick = function() { doAuth('register'); };
-
-    authModal.onclick = function(e) {
-        if(e.target === authModal) {
-            authModal.style.display = 'none';
-        }
-    };
-
-    const audio = new Audio('Piano Magic Motive.mp3');
-    audio.loop = true; 
-    audio.volume = 0.25;
-    let isPlay = false;
-
-    musicControl.onclick = function(e) {
-        e.stopPropagation();
-        if (isPlay) {
-            audio.pause();
-            isPlay = false;
-            musicControl.style.opacity = '0.7';
-        } else {
-            audio.play().then(function() {
-                isPlay = true;
-                musicControl.style.opacity = '1';
-            }).catch(function() {
-                alert('请先点击页面任意位置后再试。');
-            });
-        }
-    };
-
-    const tips = ["哼，又点我干嘛？本店每一款奶茶都很能打。", "奶茶你随便点，包你满意。", "白桃乌龙轻乳？算你有眼光。", "草莓奶霜是红国王严选。", "可恶的白兔怎么在摸鱼。"];
-    
-    rabBtn.onclick = function(e) {
-        e.stopPropagation();
-        const randomIndex = Math.floor(Math.random() * tips.length);
-        tipBox.innerText = tips[randomIndex];
-        tipBox.style.display = 'block';
-        
-        const r = rabBtn.getBoundingClientRect();
-        tipBox.style.left = Math.max(10, r.left - tipBox.offsetWidth - 12) + 'px';
-        tipBox.style.top = Math.min(window.innerHeight - tipBox.offsetHeight - 10, Math.max(10, r.top + r.height/2 - tipBox.offsetHeight/2)) + 'px';
-        
-        setTimeout(function() { 
-            tipBox.style.display = 'none'; 
-        }, 3000);
-    };
-
-    rabBtn.ondblclick = function() { 
-        chatWin.style.display = "flex"; 
-    };
-
-    closeChatBtn.onclick = function() {
-        chatWin.style.display = 'none';
-    };
-
-    const dict = [
-        { k: ["吉祥物"], r: "什么？白兔对外说我是吉祥物？" },
-        { k: ["疯帽子", "疯帽"], r: "疯帽子那家伙整天摆弄茶壶，脾气古怪，不过茶会倒是挺能撑场面。说起来，疯帽子和白兔居然有点交情，不可思议。" },
-        { k: ["红国王"], r: "（左瞧右看，凑近小声道）红国王啊……脾气不小，动不动就“砍头”挂嘴边。他最喜欢玫瑰，谁要是碰他的玫瑰园，哼，自求多福。白兔先生是效忠于红国王的，欸，我这些话你可不要跟他们说啊。" },
-        { k: ["爱丽丝"], r: "爱丽丝？那个误闯仙境的小姑娘……倒是比大多数人都勇敢，眼光也不错，只有她懂我的热巧克力泡面（感动)" },
-        { k: ["柴郡猫", "柴郡"], r: "那只柴郡猫啊，说话云里雾里的。不过那家伙居然也喜欢面包蘸辣椒酱，哼，品味倒是不赖。懒得跟她多聊。" },
-        { k: ["白兔先生", "白兔"], r: "哼，那个白兔先生？管得宽，规矩多，不过……店里能这么顺，还多亏她。算是勉强佩服一下吧。" },
-        { k: ["小时可爱","你好可爱","你真可爱","你很可爱"], r: "可、可爱……哼，你要是真想夸我，就买杯店里的奶茶，比夸我一百句管用。" },
-        { k: ["黑暗料理"], r: "黑暗料理？那是你们不懂欣赏……（小声嘟囔）算了，跟你们说也说不清楚。有这闲工夫，不如去买杯草莓奶霜，那可是红国王认可的好东西。" },
-        { k: ["凑企鹅"], r: "什么凑企鹅？听不懂……（不耐烦）我是小时！算了，你是刚从疯帽子茶会出来吗？要不要来杯招牌奶绿清醒一下？" },
-        { k: ["夏日谈", "中二王朝"], r: "嗯？好熟悉，（恍惚）白兔似乎说她梦到过一个......没什么。" },
-        { k: ["夏予筱", "筱筱"], r: "筱......？总觉得在哪听过。" },
-        { k: ["茶会", "茶话会"], r: "疯帽子想办一场永不结束的茶会，谁知道在想什么。你要去参加的话注意一点，有些人出来就像喝了假酒一样，我寻思办的也不是酒场啊。" },
-        { k: ["门店"], r: "茂名总店文创街，广州大学城，湛江凤凰乐园。去喝就知道了。" },
-        { k: ["加盟"], r: "档口3.8万起，标准店7.8万，具体政策去加盟页面。" },
-        { k: ["优惠"], r: "优惠看公众号。" },
-        { k: ["价格"], r: "本店奶茶价格在8至16之间。" },
-        { k: ["奶茶"], r: "鲜奶鲜果茶，童叟无欺。" },
-        { k: ["小时"], r: "本兔就是小时。自家奶茶我闭眼推荐。" },
-        { k: ["面包蘸辣酱", "面包蘸辣椒酱"], r: "哼，那是我最爱的吃法，你有意见？" },
-        { k: ["奶绿"], r: "招牌奶绿是店里的元老，清爽不腻。" },
-        { k: ["草莓"], r: "本店草莓奶霜可是赢得了红国王的喜爱（得意）。" },
-        { k: ["脾气"], r: "我脾气好着呢。" },
-        { k: ["你好", "您好"], r: "嗯。有事直说，关于奶茶我都能答。", ex: true }
-    ];
-
-    function goChat() {
-        const v = userInput.value.trim();
-        if (v === "") return;
-        
-        chatCon.innerHTML += '<div class="msg-right">' + v + '</div>';
-        
-        let hit = null;
-        for (let i = 0; i < dict.length; i++) {
-            const item = dict[i];
-            if (item.ex) {
-                if (v === item.k[0] || v === item.k[1]) {
-                    hit = item;
-                    break;
-                }
-            } else {
-                for (let j = 0; j < item.k.length; j++) {
-                    if (v.includes(item.k[j])) {
-                        hit = item;
-                        break;
-                    }
-                }
-                if (hit) {
-                    break;
-                }
-            }
-        }
-        
-        setTimeout(function() {
-            let reply = "啧，问清楚点。比如加盟、优惠、门店。";
-            if (hit) {
-                reply = hit.r;
-            }
-            chatCon.innerHTML += '<div class="msg-left">' + reply + '</div>';
-            chatCon.scrollTop = chatCon.scrollHeight;
-        }, 130);
-        
-        userInput.value = "";
-    }
-
-    sendChatBtn.onclick = function() {
-        goChat();
-    };
-
-    userInput.onkeydown = function(e) { 
-        if (e.key === 'Enter') {
-            goChat(); 
-        }
-    };
-
-    imagePreview.onclick = function() {
-        imagePreview.style.display = 'none';
-    };
-
-    document.body.addEventListener('click', function(e) {
-        if (e.target.classList.contains('zoomable')) { 
-            previewImg.src = e.target.src; 
-            imagePreview.style.display = 'flex'; 
-        }
-    });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
