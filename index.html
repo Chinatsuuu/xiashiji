@@ -16,12 +16,13 @@
     <div class="nav-container">
         <div class="logo-box">
             <img src="img/logo.jpg" alt="夏时记logo">
-            <span class="logo-text">夏时记奶茶</span>
+            <span class="logo-text">夏时记</span>
         </div>
         <div class="nav-menu" id="navMenu">
             <a href="javascript:void(0);" class="nav-item active" data-target="page-home">首页</a>
             <a href="javascript:void(0);" class="nav-item" data-target="page-about">品牌介绍</a>
             <a href="javascript:void(0);" class="nav-item" data-target="page-menu">产品菜单</a>
+            <a href="javascript:void(0);" class="nav-item" data-target="page-daily">今日奶茶</a>
             <a href="javascript:void(0);" class="nav-item" data-target="page-rabbit">吉祥物·小时</a>
             <a href="javascript:void(0);" class="nav-item" data-target="page-news">品牌资讯</a>
             <a href="javascript:void(0);" class="nav-item" data-target="page-history">品牌历程</a>
@@ -114,6 +115,59 @@
     <div class="goods-grid" id="fruitTeaGrid"></div>
 </section>
 
+<section id="page-daily" class="page-wrap">
+    <h3 class="page-title">今日奶茶</h3>
+    <div class="daily-intro">
+        <div class="daily-intro-text">
+            <p>选择困难了吗？来翻牌吧！</p>
+            <button class="btn-solid daily-start-btn" id="dailyStartBtn">确定</button>
+        </div>
+        <div class="daily-intro-img">
+            <img src="img/bottle.png" alt="drink me" class="zoomable">
+        </div>
+    </div>
+    <div class="daily-cards-wrap" id="dailyCardsWrap">
+        <div class="daily-cards-grid">
+            <div class="daily-card">
+                <div class="daily-card-inner">
+                    <div class="daily-card-back">
+                        <img src="img/playing card back.png" alt="牌背">
+                    </div>
+                    <div class="daily-card-front"></div>
+                </div>
+            </div>
+            <div class="daily-card">
+                <div class="daily-card-inner">
+                    <div class="daily-card-back">
+                        <img src="img/playing card back.png" alt="牌背">
+                    </div>
+                    <div class="daily-card-front"></div>
+                </div>
+            </div>
+            <div class="daily-card">
+                <div class="daily-card-inner">
+                    <div class="daily-card-back">
+                        <img src="img/playing card back.png" alt="牌背">
+                    </div>
+                    <div class="daily-card-front"></div>
+                </div>
+            </div>
+            <div class="daily-card">
+                <div class="daily-card-inner">
+                    <div class="daily-card-back">
+                        <img src="img/playing card back.png" alt="牌背">
+                    </div>
+                    <div class="daily-card-front"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="daily-result-wrap" id="dailyResultWrap">
+        <div class="goods-card" id="dailyResultCard"></div>
+        <button class="btn-outline daily-restart-btn" id="dailyRestartBtn">再翻一次</button>
+    </div>
+</section>
+
 <section id="page-rabbit" class="page-wrap">
     <h3 class="page-title">吉祥物 · 小时</h3>
     <div class="flex-box info-card">
@@ -178,24 +232,46 @@
 <section id="page-invest" class="page-wrap">
     <h3 class="page-title">投资者关系</h3>
     <div class="invest-container">
-        <div class="invest-card-list">
-            <div class="invest-card">
-                <div class="invest-card-title">凤凰集团</div>
-                <div class="invest-card-text">凤凰集团完成战略投资，为品牌线下门店选址、商圈资源对接、区域规模化拓店提供全链条资源支持。</div>
-            </div>
-            <div class="invest-card">
-                <div class="invest-card-title">丰川集团</div>
-                <div class="invest-card-text">专注新消费品牌孵化与供应链投资，入股后参与鲜果直采基地搭建、鲜奶稳定供货体系搭建，压缩原料成本，保障全国门店饮品口味标准化统一。</div>
-            </div>
-            <div class="invest-card">
-                <div class="invest-card-title">朱耀星</div>
-                <div class="invest-card-text">朱耀星（福田百货创始人）完成战略投资，出任品牌专属顾问，协助标准化运营体系搭建与市场拓展规划。</div>
+        <div class="invest-sidebar">
+            <div class="invest-sidebar-menu">
+                <div class="invest-sidebar-item active" data-target="invest-prospectus">招股文件</div>
+                <div class="invest-sidebar-item" data-target="invest-report">报告</div>
+                <div class="invest-sidebar-item" data-target="invest-contact">投资者联络</div>
             </div>
         </div>
-        <div class="invest-contact-box info-card pink-border text-center">
-            <p style="font-weight:bold;font-size:17px;color:#da8ea6;">投融资商务对接通道</p>
-            <p>商务合作邮箱：invest@xiashiji.com</p>
-            <p>对接时段：工作日 9:00-18:00</p>
+        <div class="invest-content">
+            <div class="invest-content-block active" id="invest-prospectus">
+                <div class="invest-content-row">
+                    <div class="invest-content-title">招股文件</div>
+                    <div class="invest-content-text">
+                        <p>夏时记控股有限公司</p>
+                        <p>凤凰集团、丰川集团战略投资文件</p>
+                        <p>朱耀星先生战略投资顾问协议</p>
+                    </div>
+                    <div class="invest-content-date">2026-03-01</div>
+                    <div class="invest-content-arrow">&rsaquo;</div>
+                </div>
+            </div>
+            <div class="invest-content-block" id="invest-report">
+                <div class="invest-content-row">
+                    <div class="invest-content-title">品牌发展报告</div>
+                    <div class="invest-content-text">
+                        <p>2026年上半年门店扩张与供应链升级报告</p>
+                        <p>凤凰集团、丰川集团投资后运营进展报告</p>
+                        <p>朱耀星先生顾问工作阶段性成果</p>
+                    </div>
+                    <div class="invest-content-date">2026-06-01</div>
+                    <div class="invest-content-arrow">&rsaquo;</div>
+                </div>
+            </div>
+            <div class="invest-content-block" id="invest-contact">
+                <div class="invest-content-contact">
+                    <p class="invest-contact-title">夏时记控股有限公司</p>
+                    <p class="invest-contact-item">总部地址：广东省茂名市茂南区神山高校社区文创街114514号</p>
+                    <p class="invest-contact-item">邮政编码：525000</p>
+                    <p class="invest-contact-item">电子邮箱：invest@xiashiji.com</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
