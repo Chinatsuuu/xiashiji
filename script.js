@@ -190,7 +190,7 @@ const replyMap = [
     { keys: ["凑企鹅"], ans: "什么凑企鹅？听不懂……（不耐烦）我是小时！算了，你是刚从疯帽子茶会出来吗？要不要来杯招牌奶绿清醒一下？" },
     { keys: ["夏日谈", "中二王朝"], ans: "嗯？好熟悉，（恍惚）白兔似乎说她梦到过一个......没什么。" },
     { keys: ["夏予筱", "筱筱"], ans: "筱......？总觉得在哪听过。" },
-    { keys: ["茶会", "茶话会"], ans: "疯帽子想办一场永不结束的茶会，谁知道在想什么。你要去参加的话注意一点，有些人出来像喝了假酒一样，我寻思办的也不是酒场啊。" },
+    { keys: ["茶会", "茶话会"], ans: "疯帽子想办一场永不结束的茶会，谁谁知道在想什么。你要去参加的话注意一点，有些人出来像喝了假酒一样，我寻思办的也不是酒场啊。" },
     { keys: ["门店"], ans: "茂名总店文创街，广州大学城，湛江凤凰乐园。去喝就知道了。" },
     { keys: ["加盟"], ans: "档口3.8万起，标准店7.8万，具体政策去加盟页面。" },
     { keys: ["优惠"], ans: "优惠看公众号。" },
@@ -297,14 +297,7 @@ allCards.forEach(card => {
         let randomDrink = drinksList[Math.floor(Math.random() * drinksList.length)];
         let frontDiv = card.querySelector('.daily-card-front');
         frontDiv.innerHTML = `
-            <div class="goods-img">
-                <img src="img/${randomDrink.img}" class="zoomable" loading="lazy">
-            </div>
-            <div class="goods-desc">
-                <div class="goods-name">${randomDrink.name}</div>
-                <div class="goods-price">¥${randomDrink.price}</div>
-                <button class="btn-solid" style="width:100%; margin-top:14px;">去选购</button>
-            </div>
+            <img src="img/${randomDrink.img}" class="zoomable" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
         `;
         card.classList.add('flipped');
         isFlippedLock = true;
