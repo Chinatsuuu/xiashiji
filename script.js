@@ -79,7 +79,7 @@ function buildCard(item) {
             <div class="goods-desc">
                 <div class="goods-name">${item.name}</div>
                 <div class="goods-price">¥${item.price}</div>
-                <button class="btn-solid" style="width:100%; margin-top:14px;">去选购</button>
+                <button class="btn-solid" style="width:100%; margin:14px 0 0 0; display:block; box-sizing:border-box;">去选购</button>
             </div>
         </div>
     `;
@@ -199,7 +199,7 @@ const replyMap = [
     { keys: ["小时"], ans: "本兔就是小时。自家奶茶我闭眼推荐。" },
     { keys: ["面包蘸辣酱", "面包蘸辣椒酱"], ans: "哼，那是我最爱的吃法，你有意见？" },
     { keys: ["奶绿"], ans: "招牌奶绿是店里的元老，清爽不腻。" },
-    { keys: ["草莓"], ans: "本店草莓奶霜可是赢得了红国王的喜爱（得意）。" },
+    { keys: ["草莓"], ans: "本店草莓奶霜可是赢赢得红国王的喜爱（得意）。" },
     { keys: ["脾气"], ans: "我脾气好着呢。" },
     { keys: ["你好", "您好"], ans: "嗯。有事直说，关于奶茶我都能答.", exact: true }
 ];
